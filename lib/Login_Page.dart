@@ -214,16 +214,6 @@ class SecondPage extends StatelessWidget {
     Product(name: 'Batre', price: 200000),
     Product(name: 'Modem', price: 130000),
     Product(name: 'Charger', price: 30000),
-    Product(name: 'Speaker', price: 150000),
-    Product(name: 'Mouse', price: 50000),
-    Product(name: 'Keyboard', price: 120000),
-    Product(name: 'Monitor', price: 3000000),
-    Product(name: 'Printer', price: 700000),
-    Product(name: 'Camera', price: 1500000),
-    Product(name: 'Headphones', price: 300000),
-    Product(name: 'Tablet', price: 900000),
-    Product(name: 'Smartwatch', price: 400000),
-    Product(name: 'Drone', price: 2000000),
   ];
 
   @override
