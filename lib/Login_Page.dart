@@ -164,13 +164,33 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton() {
     return ElevatedButton(
       onPressed: () {
-        debugPrint("Email : ${emailController.text}");
-        debugPrint("Password : ${passwordController.text}");
+        if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Error'),
+                content: Text('Email and password are required.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          debugPrint("Email : ${emailController.text}");
+          debugPrint("Password : ${passwordController.text}");
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SecondPage()),
-        );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SecondPage()),
+          );
+        }
       },
       style: ElevatedButton.styleFrom(
         shape: const StadiumBorder(),
@@ -202,8 +222,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class SecondPage extends StatelessWidget {
-  final List<Product> products = [
+class SecondPage extends StatefulWidget {
+  @override
+  _SecondPageState createState() => _SecondPageState();
+}
+
+class _SecondPageState extends State<SecondPage> {
+  List<Product> products = [
     Product(name: 'Televisi', price: 5000000),
     Product(name: 'Radio', price: 50000),
     Product(name: 'Remote', price: 15000),
@@ -245,7 +270,7 @@ class SecondPage extends StatelessWidget {
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () {
-                    _showDeleteDialog(context, product);
+                    _showDeleteDialog(context, product, index);
                   },
                 ),
               ),
@@ -259,29 +284,33 @@ class SecondPage extends StatelessWidget {
 
   String _formatPrice(int price) {
     return price.toString().replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-        (Match match) => '${match[1]},');
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match match) => '${match[1]},',
+        );
   }
 
-  void _showDeleteDialog(BuildContext context, Product product) {
+  void _showDeleteDialog(BuildContext context, Product product, int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Product'),
-          content: Text('Are you sure you want to delete ${product.name}?'),
+          title: Text('Hapus Produk'),
+          content: Text('Apakah Anda yakin ingin menghapus ${product.name}?'),
           actions: [
             TextButton(
               onPressed: () {
+                setState(() {
+                  products.removeAt(index);
+                });
                 Navigator.pop(context);
               },
-              child: Text('Delete'),
+              child: Text('Hapus'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); // Tutup dialog
               },
-              child: Text('Cancel'),
+              child: Text('Batal'),
             ),
           ],
         );
